@@ -3,8 +3,6 @@
 require "heroku/command"
 require "heroku/command/ps"
 
-# resize your processes
-#
 class Heroku::Command::Ps
 
   # ps:size web=SIZE
