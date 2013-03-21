@@ -6,5 +6,7 @@ An experimental process-sizing Heroku CLI plugin.
 
 ```sh
 heroku plugins:install https://github.com/heroku/heroku-2x-dynos.git
-./heroku-2x-dynos/test.sh
+
+# cd to a directory with a 'heroku' git remote, then:
+~/path/to/heroku-2x-dynos/test.sh
 ```

@@ -7,12 +7,13 @@ require "heroku/command/ps"
 #
 class Heroku::Command::Ps
 
-
   # ps:size web=SIZE
   #
   # set the size of your web worker
   #
   def size
+    app
+
     if args.empty? || args.size > 1
       styled_array [["web", "2X ($0.10/dyno-hour)"],["worker", "1X ($0.05/dyno-hour)"]]
       exit
@@ -22,11 +23,11 @@ class Heroku::Command::Ps
       raise(Heroku::Command::CommandFailed, "\"web\" is currently the only sizeable type.")
     end
 
-    if optional_app == "one-dyno-app" && args.first =~ /2/
+    if app == "one-dyno-app" && args.first =~ /2/
       raise(Heroku::Command::CommandFailed, "Resizing to 2X... failed\n2X is only available for paid apps.\nScale app to 2 or more processes\nExample: heroku ps:scale web=2")
     end
 
-    if optional_app == "free-app-in-app-tiers-experiment" && args.first =~ /2/
+    if app == "free-app-in-app-tiers-experiment" && args.first =~ /2/
       raise(Heroku::Command::CommandFailed, "Resizing to 2X... failed\n2X is only available for paid apps.\nUpgrade app to production\nExample: heroku ")
     end
 
@@ -41,13 +42,5 @@ class Heroku::Command::Ps
   end
 
 private
-
-  def optional_app
-    app rescue nil
-  end
-
-  def usage_msg
-    "Usage: heroku ps:size web=[1X|2X]"
-  end
 
 end
