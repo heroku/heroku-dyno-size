@@ -7,21 +7,8 @@ require "heroku/command/ps"
 #
 class Heroku::Command::Ps
 
-  # ps
-  #
-  # display ps sizes
-  #
-  def index
-    puts "ps: coming to a stdout near you"
 
-    if optional_app
-      puts "ps for #{optional_app}"
-    else
-      puts "app-less ps"
-    end
-  end
-
-  # ps:size [web=SIZE]
+  # ps:size web=SIZE
   #
   # set the size of your web worker
   #
