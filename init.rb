@@ -69,8 +69,11 @@ class Heroku::Command::Ps
     if app == "app-by-unconfirmed-owner"
       message = [
         "Resizing web to 2X $(0.10/dyno-hour)... failed",
-        "You need to verify your account to resize processes to 2X.",
-        "Read more: https://devcenter.heroku.com/articles/2x-dynos."
+        "You must add a credit card to resize processes to 2X.",
+        "http://www.heroku.com/billing",
+        "",
+        "Read more: http://devcenter.heroku.com/articles/2x-dynos",
+
       ]
       raise(Heroku::Command::CommandFailed, message.join("\n"))
     end
