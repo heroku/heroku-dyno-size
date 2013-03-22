@@ -33,7 +33,7 @@ class Heroku::Command::Ps
 
     # heroku ps:size web=2x zookeeper=1x
     # Resizing web processes to 2X ($0.10/dyno-hour)... done, now 2X
-    # Resizing zookeeper processes... failed
+    # Resizing zookeeper processes to 1X ($0.05/dyno-hour)... failed
     #  !    No such type as zookeeper
 
     # heroku ps:size web=2x fudge
