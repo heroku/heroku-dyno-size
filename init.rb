@@ -1,7 +1,7 @@
 require "heroku/command"
 require "heroku/command/ps"
 
-# resize processes (dynos, workers)
+# resize dynos (dynos, workers)
 #
 class Heroku::Command::Ps
 
@@ -53,13 +53,13 @@ class Heroku::Command::Ps
 
   # ps:resize PROCESS1=SIZE1 [PROCESS2=SIZE2 ...]
   #
-  # resize processes to the given size
+  # resize dynos to the given size
   #
   #Examples:
   #
   #  $ heroku ps:resize web=2x worker=1x
-  #  Resizing web processes to 2X ($0.10/dyno-hour)... done, now 2X
-  #  Resizing worker processes to 1X ($0.05/dyno-hour)... done, now 1X
+  #  Resizing web dynos to 2X ($0.10/dyno-hour)... done, now 2X
+  #  Resizing worker dynos to 1X ($0.05/dyno-hour)... done, now 1X
   #
 
   def resize
@@ -68,11 +68,11 @@ class Heroku::Command::Ps
 
     if app == "app-by-unconfirmed-owner"
       message = [
-        "Resizing web to 2X $(0.10/dyno-hour)... failed",
-        "You must add a credit card to resize processes to 2X.",
+        "Resizing web dynos to 2X $(0.10/dyno-hour)... failed",
+        "You must add a credit card to resize dynos to 2X.",
         "http://www.heroku.com/billing",
         "",
-        "Read more: http://devcenter.heroku.com/articles/2x-dynos",
+        "Read more: http://devcenter.heroku.com/articles/dyno-size",
       ]
       raise(Heroku::Command::CommandFailed, message.join("\n"))
     end
@@ -90,11 +90,10 @@ class Heroku::Command::Ps
 
     changes.keys.sort.each do |process|
       size = changes[process].gsub!("=", "")
-      action("Resizing #{process} processes to #{size}X $(#{sprintf("%.2f", dyno_price * size.to_i)}/dyno-hour)") do
+      action("Resizing #{process} dynos to #{size}X $(#{sprintf("%.2f", dyno_price * size.to_i)}/dyno-hour)") do
         status("now running #{size}X")
       end
     end
-
   end
 
 end
