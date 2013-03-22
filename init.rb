@@ -73,7 +73,6 @@ class Heroku::Command::Ps
         "http://www.heroku.com/billing",
         "",
         "Read more: http://devcenter.heroku.com/articles/2x-dynos",
-
       ]
       raise(Heroku::Command::CommandFailed, message.join("\n"))
     end
