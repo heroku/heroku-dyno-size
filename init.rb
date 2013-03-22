@@ -55,11 +55,11 @@ class Heroku::Command::Ps
   #
   # resize processes to the given size
   #
-  # Examples:
+  #Examples:
   #
-  # $ heroku ps:resize web=2x worker=1x
-  # Resizing web processes to 2X ($0.10/dyno-hour)... done, now 2X
-  # Resizing worker processes to 1X ($0.05/dyno-hour)... done, now 1X
+  #  $ heroku ps:resize web=2x worker=1x
+  #  Resizing web processes to 2X ($0.10/dyno-hour)... done, now 2X
+  #  Resizing worker processes to 1X ($0.05/dyno-hour)... done, now 1X
   #
 
   def resize
