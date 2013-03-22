@@ -67,7 +67,12 @@ class Heroku::Command::Ps
     dyno_price = 0.05
 
     if app == "app-by-unconfirmed-owner"
-      raise(Heroku::Command::CommandFailed, "Resizing web to 2X $(0.10/dyno-hour)... failed\nYou need to confirm your account first.")
+      message = [
+        "Resizing web to 2X $(0.10/dyno-hour)... failed",
+        "You need to verify your account to resize processes to 2X.",
+        "Read more: https://devcenter.heroku.com/articles/2x-dynos."
+      ]
+      raise(Heroku::Command::CommandFailed, message.join("\n"))
     end
 
     changes = {}
