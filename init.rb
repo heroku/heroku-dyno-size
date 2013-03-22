@@ -3,40 +3,31 @@ require "heroku/command/ps"
 
 class Heroku::Command::Ps
 
-  # ps:size PROCESS1=SIZE1 [PROCESS2=SIZE2 ...]
+  # ps:resize PROCESS1=SIZE1 [PROCESS2=SIZE2 ...]
   #
   # resize processes to the given size
   #
   # Examples:
   #
-  # $ heroku ps:size web=2x worker=1x
+  # $ heroku ps:resize web=2x worker=1x
   # Resizing web processes to 2X ($0.10/dyno-hour)... done, now 2X
   # Resizing worker processes to 1X ($0.05/dyno-hour)... done, now 1X
   #
-  def size
+
+  def resize
     app
     dyno_price = 0.05
-
-    if args.empty?
-      styled_array [
-        ["web:", "2X ($0.10/dyno-hour)"],
-        ["worker:", "1X ($0.05/dyno-hour)"],
-        ["qcworker:", "1X ($0.05/dyno-hour)"],
-        ["clock:", "1X ($0.05/dyno-hour)"],
-      ]
-      exit
-    end
 
     if app == "app-by-unconfirmed-owner"
       raise(Heroku::Command::CommandFailed, "Resizing web to 2X $(0.10/dyno-hour)... failed\nYou need to confirm your account first.")
     end
 
-    # heroku ps:size web=2x zookeeper=1x
+    # heroku ps:resize web=2x zookeeper=1x
     # Resizing web processes to 2X ($0.10/dyno-hour)... done, now 2X
     # Resizing zookeeper processes to 1X ($0.05/dyno-hour)... failed
     #  !    No such type as zookeeper
 
-    # heroku ps:size web=2x fudge
+    # heroku ps:resize web=2x fudge
     # Resizing web processes to 2X ($0.10/dyno-hour)... done, now 2X
 
     changes = {}
@@ -47,7 +38,7 @@ class Heroku::Command::Ps
     end
 
     if changes.empty?
-      error("Usage: heroku ps:size PROCESS1=SIZE1 [PROCESS2=SIZE2 ...]\nMust specify PROCESS and SIZE to resize.")
+      error("Usage: heroku ps:resize PROCESS1=SIZE1 [PROCESS2=SIZE2 ...]\nMust specify PROCESS and SIZE to resize.")
     end
 
     changes.keys.sort.each do |process|
