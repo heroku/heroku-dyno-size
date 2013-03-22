@@ -6,31 +6,32 @@ function run {
   printf "\n\n"
 }
 
-run "heroku ps:size"
+run "heroku ps"
 
-run "heroku ps:size web=1"
+run "heroku ps -a max"
 
-run "heroku ps:size web=1x"
+run "heroku ps:resize -a max"
 
-run "heroku ps:size web=1X"
+run "heroku ps:resize web=1 -a max"
 
-run "heroku ps:size web=2"
+run "heroku ps:resize web=1x -a max"
 
-run "heroku ps:size web=2x"
+run "heroku ps:resize web=1X -a max"
 
-run "heroku ps:size web=2X"
+run "heroku ps:resize web=2 -a max"
 
-run "heroku ps:size web=3"
+run "heroku ps:resize web=2x -a max"
 
-run "heroku ps:size web=2X -a one-dyno-app"
+run "heroku ps:resize web=2X -a max"
 
-run "heroku ps:size 2X -a free-app-in-app-tiers-experiment"
+run "heroku ps:resize web=3 -a max"
 
-run "heroku ps:size web=4x"
+run "heroku ps:resize web=4x -a max"
 
-run "heroku ps:size worker=2X"
+run "heroku ps:resize web=1x worker=2x -a max"
 
-run "heroku ps:size web=2x worker=2x"
+run "heroku ps:resize worker=2x web=2x -a max"
 
-run "heroku ps:size worker=2x web=2x"
+run "heroku ps:resize web=2x foo -a max"
 
+run "heroku ps:resize foo web=2x -a max"
