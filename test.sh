@@ -35,3 +35,5 @@ run "heroku ps:resize worker=2x web=2x -a max"
 run "heroku ps:resize web=2x foo -a max"
 
 run "heroku ps:resize foo web=2x -a max"
+
+run "heroku ps:resize web=2x -a app-by-unconfirmed-owner"
