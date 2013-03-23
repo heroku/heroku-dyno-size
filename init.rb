@@ -51,7 +51,7 @@ class Heroku::Command::Ps
     end
   end
 
-  # ps:resize PROCESS1=SIZE1 [PROCESS2=SIZE2 ...]
+  # ps:resize PROCESS1=1x|2x [PROCESS2=1x|2x ...]
   #
   # resize dynos to the given size
   #
@@ -70,7 +70,7 @@ class Heroku::Command::Ps
       message = [
         "Resizing web dynos to 2X $(0.10/dyno-hour)... failed",
         "You must add a credit card to resize dynos to 2X.",
-        "http://www.heroku.com/billing",
+        "http://heroku.com/billing",
         "",
         "Read more: http://devcenter.heroku.com/articles/dyno-size",
       ]
