@@ -85,7 +85,7 @@ class Heroku::Command::Ps
     end
 
     if changes.empty?
-      error("Usage: heroku ps:resize PROCESS1=SIZE1 [PROCESS2=SIZE2 ...]\nMust specify PROCESS and SIZE to resize.")
+      error("Usage: heroku ps:resize PROCESS1=1x|2x [PROCESS2=1x|2x ...]\nMust specify PROCESS and SIZE to resize.")
     end
 
     changes.keys.sort.each do |process|
