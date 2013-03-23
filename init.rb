@@ -77,6 +77,14 @@ class Heroku::Command::Ps
       raise(Heroku::Command::CommandFailed, message.join("\n"))
     end
 
+    if app == "unavailable-size"
+      message = [
+        "Resizing web dynos to 3X $(0.15/dyno-hour)... failed",
+        "No such size as 3X. Available dyno sizes are 1X and 2X.",
+      ]
+      raise(Heroku::Command::CommandFailed, message.join("\n"))
+    end
+
     changes = {}
     args.each do |arg|
       if arg =~ /^([a-zA-Z0-9_]+)(=\d+)([xX]?)$/
