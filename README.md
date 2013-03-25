@@ -4,8 +4,8 @@ A Heroku CLI plugin to resize dynos to a given size.
 
 ## Installation
 
-```sh
-heroku plugins:install https://github.com/heroku/heroku-dyno-size.git
+```bash
+$ heroku plugins:install https://github.com/heroku/heroku-dyno-size.git
 ```
 
 ## Usage
@@ -24,9 +24,9 @@ Examples:
 
 ## Development
 
-```sh
-git clone https://github.com/heroku/heroku-dyno-size.git
-ln -s ~/.heroku/plugins path/to/heroku-dyno-size
-cd path/to/heroku-dyno-size
-./test.sh
+```bash
+$ git clone https://github.com/heroku/heroku-dyno-size.git
+$ ln -s path/to/heroku-dyno-size ~/.heroku/plugins/heroku-dyno-size
+$ cd path/to/heroku-dyno-size
+$ ./test.sh
 ```
