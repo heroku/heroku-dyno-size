@@ -11,13 +11,13 @@ heroku plugins:install https://github.com/heroku/heroku-dyno-size.git
 ## Usage
 
 ```
-Usage: heroku ps:resize PROCESS1=1x|2x [PROCESS2=1x|2x ...]
+Usage: heroku ps:resize PROCESS1=1X|2X [PROCESS2=1X|2X ...]
 
  resize dynos to the given size
 
 Examples:
 
-  $ heroku ps:resize web=2x worker=1x
+  $ heroku ps:resize web=2X worker=1X
   Resizing web dynos to 2X ($0.10/dyno-hour)... done, now 2X
   Resizing worker dynos to 1X ($0.05/dyno-hour)... done, now 1X
 ```
