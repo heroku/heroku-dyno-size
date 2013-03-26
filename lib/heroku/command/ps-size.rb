@@ -83,7 +83,7 @@ class Heroku::Command::Ps
     changes.keys.sort.each do |process|
       size = changes[process].to_i
       action("Resizing #{process} dynos to #{size}X ($#{price_for_size(size)}/dyno-hour)") do
-        api.put_formation(app, process, {"quantity" => size}) # CHANGE PARAM TO SIZE
+        api.put_formation(app, process, {"size" => size})
         status("now #{size}X")
       end
     end
