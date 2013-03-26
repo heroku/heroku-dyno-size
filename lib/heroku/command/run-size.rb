@@ -41,7 +41,7 @@ class Heroku::Command::Run
     opts = {
       :attach => false
     }
-    opts[:size] = [1, options[:size].to_i].max if options[:size]
+    opts[:size] = get_size if options[:size]
 
     app_name = app
     process_data = action("Running `#{command}` detached", :success => "up") do
@@ -59,9 +59,7 @@ protected
       :attach => true,
       :ps_env => get_terminal_environment
     }
-    opts[:size] = [1, options[:size].to_i].max if options[:size]
-
-    puts opts.inspect
+    opts[:size] = get_size if options[:size]
 
     app_name = app
     process_data = action("Running `#{command}` attached to terminal", :success => "up") do
@@ -72,41 +70,10 @@ protected
     rendezvous_session(process_data["rendezvous_url"])
   end
 
+  def get_size
+    size = options[:size].to_i
+    error("Must specify SIZE in format '1X' or '2X'.") if size <= 0
+    size
+  end
+
 end
-
-
-# require "heroku/command/base"
-
-# class Heroku::Command::Run
-
-#   # run COMMAND
-#   #
-#   # run an attached process
-#   #
-#   # -k, --kernel NAME     # run process on the specified kernel
-#   #
-#   #Example:
-#   #
-#   # $ heroku run bash
-#   # Running `bash` attached to terminal... up, run.1
-#   # ~ $
-#   #
-#   def index
-#     command = args.join(" ")
-#     error("Usage: heroku run COMMAND")if command.empty?
-#     run_attached(command)
-#   end
-
-#   alias :run_attached_without_kernel :run_attached
-
-#   def run_attached(command)
-#     process_data = action("Running `#{command}` attached to terminal", :success => "up") do
-#       ps_options = { :attach => true, :ps_env => get_terminal_environment }
-#       ps_options.merge!(:kernel => options[:kernel]) if options.has_key?(:kernel)
-#       process_data = api.post_ps(app, command, ps_options).body
-#       status(process_data["process"])
-#       process_data
-#     end
-#     rendezvous_session(process_data["rendezvous_url"])
-#   end
-# end
