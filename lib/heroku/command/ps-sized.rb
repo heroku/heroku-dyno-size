@@ -1,9 +1,9 @@
 require "heroku/command"
 require "heroku/command/ps"
 
-# resize dynos (dynos, workers)
-#
 class Heroku::Command::Ps
+
+  DYNO_PRICE = 0.05
 
   # ps
   #
@@ -28,13 +28,13 @@ class Heroku::Command::Ps
     processes.each do |process|
       name    = process["process"].split(".").first
       elapsed = time_ago(Time.now - process['elapsed'])
-      size    = formation[name].fetch("size", 1)
+      size    = formation[name].fetch("size", 1).to_i
 
       if name == "run"
         key  = "run: one-off processes"
         item = "%s: %s %s: `%s`" % [ process["process"], process["state"], elapsed, process["command"] ]
       else
-        key  = "#{name}: `#{process["command"]}` (#{size}X - $#{sprintf("%.2f", 0.05 * size.to_i)}/dyno-hour)"
+        key  = "#{name} (#{size}X): `#{process["command"]}`"
         item = "%s: %s %s" % [ process["process"], process["state"], elapsed ]
       end
 
@@ -57,53 +57,45 @@ class Heroku::Command::Ps
   #
   # resize dynos to the given size
   #
-  #Examples:
+  # Example:
   #
-  #  $ heroku ps:resize web=2X worker=1X
-  #  Resizing web dynos to 2X ($0.10/dyno-hour)... done, now 2X
-  #  Resizing worker dynos to 1X ($0.05/dyno-hour)... done, now 1X
+  # $ heroku ps:resize web=2X worker=1X
+  # Resizing web dynos to 2X ($0.10/dyno-hour)... done, now 2X
+  # Resizing worker dynos to 1X ($0.05/dyno-hour)... done, now 1X
   #
-
   def resize
     app
-    dyno_price = 0.05
-
-    if app == "app-by-unconfirmed-owner"
-      message = [
-        "Resizing web dynos to 2X $(0.10/dyno-hour)... failed",
-        "You must add a credit card to resize dynos to 2X.",
-        "http://heroku.com/billing",
-        "",
-        "Read more: http://devcenter.heroku.com/articles/dyno-size",
-      ]
-      raise(Heroku::Command::CommandFailed, message.join("\n"))
-    end
-
-    if app == "unavailable-size"
-      message = [
-        "Resizing web dynos to 3X $(0.15/dyno-hour)... failed",
-        "No such size as 3X. Available dyno sizes are 1X and 2X.",
-      ]
-      raise(Heroku::Command::CommandFailed, message.join("\n"))
-    end
-
     changes = {}
     args.each do |arg|
-      if arg =~ /^([a-zA-Z0-9_]+)(=\d+)([xX]?)$/
+      if arg =~ /^([a-zA-Z0-9_]+)=(\d+)([xX]?)$/
         changes[$1] = $2
       end
     end
 
     if changes.empty?
-      error("Usage: heroku ps:resize PROCESS1=1X|2X [PROCESS2=1X|2X ...]\nMust specify PROCESS and SIZE to resize.")
+      message = [
+          "Usage: heroku ps:resize PROCESS1=1X|2X [PROCESS2=1X|2X ...]",
+          "Must specify PROCESS and SIZE to resize."
+      ]
+      error(message.join("\n"))
     end
 
     changes.keys.sort.each do |process|
-      size = changes[process].gsub!("=", "")
-      action("Resizing #{process} dynos to #{size}X $(#{sprintf("%.2f", dyno_price * size.to_i)}/dyno-hour)") do
-        status("now running #{size}X")
+      size = changes[process].to_i
+      action("Resizing #{process} dynos to #{size}X ($#{price_for_size(size)}/dyno-hour)") do
+        api.put_formation(app, process, {"quantity" => size}) # CHANGE PARAM TO SIZE
+        status("now #{size}X")
       end
     end
+  end
+
+  alias_command "resize", "ps:resize"
+
+
+private
+
+  def price_for_size size
+    sprintf("%.2f", size * DYNO_PRICE)
   end
 
 end
