@@ -12,10 +12,10 @@ class Heroku::Command::Ps
   # Example:
   #
   # $ heroku ps
-  # === run: one-off processes (1X - $0.05/dyno-hour)
+  # === run (1X): one-off processes
   # run.1: up for 5m: `bash`
   #
-  # === web: `bundle exec thin start -p $PORT` (2X - $0.10/dyno-hour)
+  # === web (2X): `bundle exec thin start -p $PORT`
   # web.1: created for 30s
   #
   def index
