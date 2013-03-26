@@ -28,11 +28,11 @@ class Heroku::Command::Ps
     processes.each do |process|
       name    = process["process"].split(".").first
       elapsed = time_ago(Time.now - process['elapsed'])
-      size    = formation[name].fetch("size", 1).to_i
+      size    = formation[name] ? formation[name].fetch("size", 1) : process.fetch("size", 1)
 
       if name == "run"
         key  = "run: one-off processes"
-        item = "%s: %s %s: `%s`" % [ process["process"], process["state"], elapsed, process["command"] ]
+        item = "%s (%sX): %s %s: `%s`" % [ process["process"], size, process["state"], elapsed, process["command"] ]
       else
         key  = "#{name} (#{size}X): `#{process["command"]}`"
         item = "%s: %s %s" % [ process["process"], process["state"], elapsed ]
