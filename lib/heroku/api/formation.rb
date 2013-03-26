@@ -14,15 +14,17 @@ module Heroku
       )
     end
 
-    # # POST /apps/:app/ps
-    # def post_ps(app, command, options={})
-    #   options = { 'command' => command }.merge(options)
-    #   request(
-    #     :expects  => 200,
-    #     :method   => :post,
-    #     :path     => "/apps/#{app}/ps",
-    #     :query    => ps_options(options)
-    #   )
-    # end
+    # POST /apps/:app/ps
+    def put_formation(app, process, options)
+      request(
+        :expects  => 200,
+        :method   => :put,
+        :path     => "/apps/#{app}/formation/#{process}",
+        :query    => options,
+        :headers  => {
+          "Accept" => "application/vnd.heroku+json; version=3"
+        }
+      )
+    end
   end
 end
