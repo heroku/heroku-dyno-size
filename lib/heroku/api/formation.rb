@@ -15,12 +15,12 @@ module Heroku
     end
 
     # POST /apps/:app/ps
-    def put_formation(app, process, options)
+    def put_formation(app, formation)
       request(
         :expects  => 200,
         :method   => :put,
-        :path     => "/apps/#{app}/formation/#{process}",
-        :query    => options,
+        :path     => "/apps/#{app}/formation",
+        :body     => formation,
         :headers  => {
           "Accept" => "application/vnd.heroku+json; version=3"
         }

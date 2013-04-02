@@ -68,7 +68,7 @@ class Heroku::Command::Ps
     changes = {}
     args.each do |arg|
       if arg =~ /^([a-zA-Z0-9_]+)=(\d+)([xX]?)$/
-        changes[$1] = $2
+        changes[$1] = { "size" => $2.to_i }
       end
     end
 
@@ -80,12 +80,13 @@ class Heroku::Command::Ps
       error(message.join("\n"))
     end
 
-    changes.keys.sort.each do |process|
-      size = changes[process].to_i
-      action("Resizing #{process} dynos to #{size}X ($#{price_for_size(size)}/dyno-hour)") do
-        api.put_formation(app, process, {"size" => size})
-        status("now #{size}X")
-      end
+    action("Resizing dynos and restarting specified processes") do
+      api.put_formation(app, json_encode(changes))
+    end
+    changes.each do |type, options|
+      size  = options["size"]
+      price = sprintf("%.2f", 0.05 * size)
+      display "#{type} dynos now #{size}X ($#{price}/dyno-hour)"
     end
   end
 
