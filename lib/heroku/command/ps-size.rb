@@ -43,7 +43,7 @@ class Heroku::Command::Ps
 
     processes_by_command.keys.each do |key|
       processes_by_command[key] = processes_by_command[key].sort do |x,y|
-        x.match(/\.(\d+):/).captures.first.to_i <=> y.match(/\.(\d+):/).captures.first.to_i
+        x.match(/\.(\d+)(:| )/).captures.first.to_i <=> y.match(/\.(\d+)(:| )/).captures.first.to_i
       end
     end
 
